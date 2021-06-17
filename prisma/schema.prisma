@@ -1,0 +1,55 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model benutzer {
+  id_benutzer   Int    @id @default(autoincrement())
+  benutzername  String @unique @default("0") @db.VarChar(50)
+  passwort_hash String @db.VarChar(255)
+  email         String @db.VarChar(250)
+  recht_admin   Int?   @default(0) @db.TinyInt
+}
+
+model benutzer_raum {
+  id_benutzer_raum Int @id @default(autoincrement())
+  id_benutzer      Int
+  id_raum          Int
+}
+
+model nachricht {
+  id_nachricht Int       @id @default(autoincrement())
+  id_benutzer  Int
+  id_raum      Int
+  zeitstempel  DateTime?
+  text         String    @db.Text
+  raum         raum      @relation(fields: [id_raum], references: [id_raum])
+
+  @@index([id_raum], name: "fk_raum")
+}
+
+model raum {
+  id_raum   Int         @id @default(autoincrement())
+  name      String      @db.VarChar(150)
+  nachricht nachricht[]
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model recht {
+  id_recht Int?
+  name     String? @db.TinyText
+
+  @@ignore
+}
+
+model session {
+  id          Int       @id @default(autoincrement())
+  id_session  String?   @db.VarChar(50)
+  id_benutzer Int?
+  ip          String?   @db.VarChar(15)
+  ablauf      DateTime? @db.DateTime(0)
+}

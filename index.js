@@ -1,40 +1,28 @@
-const { ApolloServer, gql } = require("apollo-server");
-const { PrismaClient } = require("@prisma/client");
+const { merge } = require("lodash");
+const { ApolloServer, gql, makeExecutableSchema } = require("apollo-server");
+const {
+  MessageTypeDefs,
+  MessageResolvers,
+  RoomTypeDefs,
+  RoomResolvers,
+  UserTypeDefs,
+  UserResolvers
+} = require("./models");
 
-const typeDefs = gql`
-  type Message {
-    id_nachricht: Int!
-    id_benutzer: Int!
-    id_raum: Int!
-    zeitstempel: String
-    text: String
-    raum: Raum
-  }
-
-  type Raum {
-    id_raum: Int!
-    name: String
-  }
-
+const rootTypeDefs = gql`
   type Query {
-    allMessages: [Message!]!
+    _empty: String
   }
 `;
 
-const prisma = new PrismaClient();
+const resolvers = {}
 
+const schema = makeExecutableSchema({
+  typeDefs: [rootTypeDefs, MessageTypeDefs, RoomTypeDefs, UserTypeDefs],
+  resolvers: merge(resolvers, MessageResolvers, RoomResolvers, UserResolvers)
+});
 
-
-const resolvers = {
-  Query: {
-    allMessages: async () => {
-      let x = await prisma.nachricht.findMany();
-      return x;
-    }
-  }
-}
-
-const server = new ApolloServer({ typeDefs, resolvers });
+const server = new ApolloServer({ schema: schema });
 
 server.listen().then(({ url }) => {
   console.log(`Server started and listening on ${url}`);

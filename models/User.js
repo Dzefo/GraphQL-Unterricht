@@ -1,5 +1,7 @@
 const { gql } = require("apollo-server");
 const { PrismaClient } = require("@prisma/client");
+const bcrypt = require('bcrypt');
+
 
 const prisma = new PrismaClient();
 const typeDef = gql`
@@ -19,9 +21,20 @@ const typeDef = gql`
     recht_admin: Boolean
   }
 
+  input UserInput {
+    benutzername: String
+    passwort: String
+    email: String
+    recht_admin: Boolean
+  }
+
   extend type Query {
     getAllUsers: [User]
-    getUser(where: UserWhere!): [User]
+    getUser(where: UserWhere!): [User]  
+  }
+
+  extend type Mutation {
+    addUser(input: UserInput!): User
   }
 `;
 
@@ -31,7 +44,7 @@ const resolvers = {
       return prisma.benutzer.findMany();
     },
     getUser: async (_, { where: { id_benutzer, benutzername, passwort_hash, email, recht_admin } }) => {
-      let x = await prisma.benutzer.findFirst({
+      let users = await prisma.benutzer.findMany({
         where: {
           OR: [
             { id_benutzer: id_benutzer },
@@ -42,9 +55,21 @@ const resolvers = {
           ],
         }
       });
-      return [].concat(x);
+      return users;
     }
-  }
+  },
+  Mutation: {
+    addUser: async (_, { input: { benutzername, passwort, email, recht_admin } }) => {
+      return await prisma.benutzer.create({
+        data: {
+          benutzername: benutzername,
+          passwort_hash: await bcrypt.hash(passwort, bcrypt.genSaltSync(12)),
+          email: email,
+          recht_admin: recht_admin ? 1 : 0
+        }
+      })
+    }
+  },
 }
 
 

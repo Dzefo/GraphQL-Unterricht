@@ -10,7 +10,20 @@ const typeDef = gql`
 
   extend type Query {
     getAllRooms: [Room]
-    getRoom(id: Int!): Room
+    getRoom(where: RoomWhere!): [Room]
+  }
+
+  input RoomWhere {
+    id_raum: Int
+    name: String
+  }
+
+  input RoomInput {
+    name: String
+  }
+
+  extend type Mutation {
+    createRoom(input: RoomInput!): Room
   }
 `;
 
@@ -19,12 +32,27 @@ const resolvers = {
     getAllRooms: async () => {
       return prisma.raum.findMany();
     },
-    getRoom: async (_, { id }) => {
-      return prisma.raum.findFirst({
-        where: { id_raum: id }
+    getRoom: async (_, { where: { id_raum, name } }) => {
+      let rooms = await prisma.raum.findMany({
+        where: {
+          OR: [
+            { id_raum: id_raum },
+            { name: name }
+          ],
+        }
       });
+      return rooms;
     }
-  }
+  },
+  Mutation: {
+    createRoom: async (_, { input: { name } }) => {
+      return await prisma.raum.create({
+        data: {
+          name: name,
+        }
+      })
+    }
+  },
 }
 
 

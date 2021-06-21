@@ -18,8 +18,14 @@ const typeDef = gql`
     getMessage(id: Int!): Message
   }
 
+  input MessageInput {
+    room: Int!
+    user: Int!
+    message: String!
+  }
+
   extend type Mutation {
-    writeMessage(room: Int!, user: Int!, message: String!): Message
+    writeMessage(input: MessageInput): Message
   }
 `;
 
@@ -35,7 +41,8 @@ const resolvers = {
     }
   },
   Mutation: {
-    writeMessage: async (_, { room, user, message }) => {
+    writeMessage: async (_, { input }) => {
+      const { message, room, user } = input;
       return await prisma.nachricht.create({
         data: {
           zeitstempel: new Date().toISOString(),

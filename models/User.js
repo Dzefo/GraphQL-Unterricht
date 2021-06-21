@@ -6,10 +6,25 @@ const bcrypt = require('bcrypt');
 const prisma = new PrismaClient();
 const typeDef = gql`
   type User {
+    """
+    Die ID des Benutzer
+    """
     id_benutzer: Int!
+    """
+    Der Benutzername des Benutzers
+    """
     benutzername: String
+    """
+    Der BCrypt PasswortHash des Benutzers
+    """
     passwort_hash: String
+    """
+    Die E-Mail des Benutzers
+    """
     email: String
+    """
+    Boolean zum feststellen, ob der Benutzer Admin Rechte hat
+    """
     recht_admin: Boolean
   }
 

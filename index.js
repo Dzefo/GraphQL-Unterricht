@@ -10,9 +10,9 @@ const {
 } = require("./models");
 
 const rootTypeDefs = gql`
-  type Query {
-    _empty: String
-  }
+  type Query
+
+  type Mutation
 `;
 
 const resolvers = {}

@@ -19,9 +19,9 @@ const resolvers = {
     getAllRooms: async () => {
       return prisma.raum.findMany();
     },
-    getRoom: async (_, args) => {
+    getRoom: async (_, { id }) => {
       return prisma.raum.findFirst({
-        where: { id_raum: args.id }
+        where: { id_raum: id }
       });
     }
   }

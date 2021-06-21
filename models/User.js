@@ -8,12 +8,20 @@ const typeDef = gql`
     benutzername: String
     passwort_hash: String
     email: String
-    recht_admin: String
+    recht_admin: Boolean
+  }
+
+  input UserWhere {
+    id_benutzer: Int
+    benutzername: String
+    passwort_hash: String
+    email: String
+    recht_admin: Boolean
   }
 
   extend type Query {
     getAllUsers: [User]
-    getUser(id: Int!): User
+    getUser(where: UserWhere!): [User]
   }
 `;
 
@@ -22,10 +30,19 @@ const resolvers = {
     getAllUsers: async () => {
       return prisma.benutzer.findMany();
     },
-    getUser: async (_, args) => {
-      return prisma.benutzer.findFirst({
-        where: { id_benutzer: args.id }
-      })
+    getUser: async (_, { where: { id_benutzer, benutzername, passwort_hash, email, recht_admin } }) => {
+      let x = await prisma.benutzer.findFirst({
+        where: {
+          OR: [
+            { id_benutzer: id_benutzer },
+            { benutzername: benutzername },
+            { passwort_hash: passwort_hash },
+            { email: email },
+            { recht_admin: recht_admin != undefined ? (recht_admin ? 1 : 0) : undefined },
+          ],
+        }
+      });
+      return [].concat(x);
     }
   }
 }

@@ -17,6 +17,10 @@ const typeDef = gql`
     getAllMessages: [Message]
     getMessage(id: Int!): Message
   }
+
+  extend type Mutation {
+    writeMessage(room: Int!, user: Int!, message: String!): Message
+  }
 `;
 
 const resolvers = {
@@ -24,9 +28,21 @@ const resolvers = {
     getAllMessages: async () => {
       return await prisma.nachricht.findMany();
     },
-    getMessage: async (_, args) => {
+    getMessage: async (_, { id }) => {
       return await prisma.nachricht.findFirst({
-        where: { id_nachricht: args.id }
+        where: { id_nachricht: id }
+      })
+    }
+  },
+  Mutation: {
+    writeMessage: async (_, { room, user, message }) => {
+      return await prisma.nachricht.create({
+        data: {
+          zeitstempel: new Date().toISOString(),
+          text: message,
+          id_raum: room,
+          id_benutzer: user
+        }
       })
     }
   },

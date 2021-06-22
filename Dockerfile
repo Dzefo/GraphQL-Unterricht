@@ -6,7 +6,7 @@ ENV DATABASE_URL=$database_url
 
 WORKDIR /app
 COPY ["package.json", "package-lock.json*", "./"]
-RUN npm install --production
+RUN npm ci --production
 RUN npm i -g prisma
 COPY . .
 RUN prisma generate

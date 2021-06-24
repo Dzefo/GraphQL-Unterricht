@@ -1,7 +1,7 @@
 const { merge } = require("lodash");
 const { ApolloServer, gql, makeExecutableSchema } = require("apollo-server");
 
-// Importing all typDefs and resolvers from models folder
+// Die TypeDefs und Resolver aus den verschiedenen Models werden importiert.
 const {
   MessageTypeDefs,
   MessageResolvers,
@@ -12,7 +12,7 @@ const {
 } = require("./models");
 
 
-// Defining the root typeDefs and resolvers. The query and mutation will be extended from the model typeDefs
+// Hier werden die RootTypeDefs definiert. Sie werden später mit den TypeDefs aus den Models erweitert
 const rootTypeDefs = gql`
   type Query {
     _: String
@@ -23,18 +23,17 @@ const rootTypeDefs = gql`
   }
 `;
 
-// creating the schema from the imported typeDefs and resolvers.
-// lodash merge is used to merge the resolver objects
+// Aus den TypeDefs und Resolvern wird das GraphQL schema generiert
 const schema = makeExecutableSchema({
   typeDefs: [rootTypeDefs, MessageTypeDefs, RoomTypeDefs, UserTypeDefs],
   resolvers: merge(MessageResolvers, RoomResolvers, UserResolvers)
 });
 
-// Creating server object with schema
+// Der ApolloServer wird erstellt. Apollo ist das Framework, dass die GraphQL Logik übernimmt
 const server = new ApolloServer({ schema: schema });
 
 
-// Starting server on default port 4000
+// Der Server wird auf dem Standard Port 4000 gestartet
 server.listen().then(({ url }) => {
   console.log(`Server started and listening on ${url}`);
 });

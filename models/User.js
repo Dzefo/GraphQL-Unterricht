@@ -1,9 +1,12 @@
+// Die nötigen imports werden getätigt
 const { gql } = require("apollo-server");
 const { PrismaClient } = require("@prisma/client");
 const bcrypt = require('bcrypt');
 
-
+// Der prisma client wird erstellt. Er wird benötigt um mit der Datenbank zu kommunizieren
 const prisma = new PrismaClient();
+
+// Die typeDefs definieren das Schema der GraphQL API. Hier werden alle Objekte, Inputs, Querys und Mutations definiert.
 const typeDef = gql`
   type User {
     """
@@ -53,6 +56,8 @@ const typeDef = gql`
   }
 `;
 
+// Die Resolver sind die Methoden, die die Querys und Mutations auflösen.
+// Wenn z.B. getUser aufgerufen wird, wird die getUser Methode ausgeführt und der return Wert an den Client zurückgeschickt
 const resolvers = {
   Query: {
     getAllUsers: async () => {

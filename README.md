@@ -1,15 +1,12 @@
 # Unterrichtsbeispiel für eine GraphQL-API mit NodeJS, Apollo und Prisma
 
 ## Was ist GraphQL
----
 GraphQL ist eine Query Language und serverseitige Runtime für APIs. Sie ist dafür designt, APIs schneller, flexibler und Entwickler freundlicher zu machen. So wird es z.B. möglich gemacht mit einer Request Daten aus mehreren Datenbanken, oder auch verschiedenen anderen APIs auszulesen.
 
 ## Sandbox
----
 Die Beispiel API kann im [ApolloGraphQL Studio](https://studio.apollographql.com/sandbox) in einer Sandbox ausprobiert werden. Auf der Seite muss die Sandbox Adresse https://localhost:4000 zu https://graphql.dzefo.de geändert werden.
 
 ## Query Beispiele anhand des im Unterricht entwickelten Chats
----
 
 ### Querys
 Am besten sticht der Nutzen von GraphQL heraus, wenn man sich ein paar Beispiel Querys anschaut.

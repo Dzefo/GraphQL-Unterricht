@@ -1,4 +1,4 @@
-// Ignore this file. This does only generate the editor
+// Diese Datei bitte ignorieren. Sie ist nicht relevant für das GraphQL Beispiel
 require.config({ paths: { 'vs': 'https://unpkg.com/monaco-editor@latest/min/vs' } });
 window.MonacoEnvironment = { getWorkerUrl: () => proxy };
 

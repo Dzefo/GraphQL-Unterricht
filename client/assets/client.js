@@ -26,6 +26,9 @@ const fetchQuery = async () => {
   // Die Response wird in ein JSON Objekt umgewandelt.
   let json = await res.json();
 
+  // Das JSON Objekt wird in der console ausgegeben
+  console.log(json);
+
   // Hier holen wir uns die Variable getAllUsers aus dem JSON Objekt.
   let { data: { getAllUsers } } = json; // Das gleiche, wie "let getAllUsers = json.data.getAllUsers"
 

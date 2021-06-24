@@ -1,17 +1,3 @@
-// Defining the query
-const get_all_messages_query = `
-query Query {
-  getAllUsers {
-    id_benutzer
-    benutzername
-    recht_admin
-    email
-    passwort_hash
-  }
-}`;
-
-
-
 const fetchQuery = async () => {
   // Hier wird eine POST Request an den Endpunkt gesendet.
   // Der Body ist ein JSON String, welcher die Query enthällt
@@ -21,7 +7,7 @@ const fetchQuery = async () => {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
     },
-    body: JSON.stringify({ query: get_all_messages_query })
+    body: JSON.stringify({ query: GRAPHQL_QUERY })
   });
   // Die Response wird in ein JSON Objekt umgewandelt.
   let json = await res.json();

@@ -11,16 +11,7 @@ let proxy = URL.createObjectURL(new Blob([`
 
 require(["vs/editor/editor.main"], function () {
   monaco.editor.create(document.getElementById('container'), {
-    value: [`query Query {
-  getAllUsers {
-    id_benutzer
-    benutzername
-    recht_admin
-    email
-    passwort_hash
-  }
-}`
-    ].join('\n'),
+    value: GRAPHQL_QUERY,
     language: 'graphql',
     theme: 'vs-dark',
     fontSize: 22,

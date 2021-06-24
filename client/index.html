@@ -10,6 +10,18 @@
 </head>
 
 <body style="margin: 0;">
+  <script>
+    const GRAPHQL_QUERY = `
+query Query {
+  getAllUsers {
+    id_benutzer
+    benutzername
+    recht_admin
+    email
+    passwort_hash
+  }
+}`;
+  </script>
   <!-- Das hier bitte ignorieren. Hier wird der Editor erstellt -->
   <script src="https://unpkg.com/monaco-editor@latest/min/vs/loader.js"></script>
   <div id="container"></div>

@@ -13,9 +13,17 @@ const typeDef = gql`
     user: User
   }
 
+  input MessageWhere {
+    id_nachricht: Int
+    id_benutzer: Int
+    id_raum: Int
+    zeitstempel: String
+    text: String
+  }
+
   extend type Query {
     getAllMessages: [Message]
-    getMessage(id: Int!): Message
+    getMessage(where: MessageWhere!): [Message]
   }
 
   input MessageInput {
@@ -34,10 +42,19 @@ const resolvers = {
     getAllMessages: async () => {
       return await prisma.nachricht.findMany();
     },
-    getMessage: async (_, { id }) => {
-      return await prisma.nachricht.findFirst({
-        where: { id_nachricht: id }
-      })
+    getMessage: async (_, { where: { id_nachricht, id_benutzer, id_raum, zeitstempel, text } }) => {
+      let messages = await prisma.nachricht.findMany({
+        where: {
+          OR: [
+            { id_nachricht: id_nachricht },
+            { id_benutzer: id_benutzer },
+            { id_raum: id_raum },
+            { zeitstempel: zeitstempel },
+            { text: text },
+          ],
+        }
+      });
+      return messages;
     }
   },
   Mutation: {

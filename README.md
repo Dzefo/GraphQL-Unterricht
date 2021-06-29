@@ -186,3 +186,49 @@ Die Response dieser Mutation, gibt uns also in diesem Fall die eingegeben Daten,
   }
 }
 ```
+
+## Installation
+
+Um den Server zu installieren, muss zunächst das Repository gecloned werden.
+
+```
+$ git clone https://github.com/torstenbergemann/GraphQL-Unterricht
+```
+
+Dann müssen die npm Dependencies installiert werden.
+```
+$ npm i
+```
+
+```
+$ npm i -g prisma
+```
+
+Anschließend muss noch der prisma Client generiert werden
+
+```
+$ prisma generate
+```
+
+Dann kann der Server gestartet werden
+
+```
+$ npm start
+```
+
+### Mit Docker
+
+Um den Server in einem Docker container zu starten, muss das Image gebuilded werden und anschließend der Container gestartet werden.
+
+```
+$ docker build -t graphql_unterricht . --build-arg database_url=<MySQLConnectionString>
+```
+
+```
+$ docker run -p 4000:4000 --name graphql_unterricht -d graphql_unterricht
+```
+
+
+
+
+
